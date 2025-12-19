@@ -34,3 +34,23 @@ def redirect_url(short_code: str):
 
     url_database[short_code]["clicks"] += 1
     return RedirectResponse(url_database[short_code]["original_url"])
+
+
+@app.get("/urls")
+def list_urls():
+    return url_database
+
+
+@app.get("/info/{short_code}")
+def url_info(short_code: str):
+    if short_code not in url_database:
+        raise HTTPException(status_code=404, detail="Short code not found")
+    return url_database[short_code]
+
+
+@app.delete("/{short_code}")
+def delete_url(short_code: str):
+    if short_code not in url_database:
+        raise HTTPException(status_code=404, detail="Short code not found")
+    del url_database[short_code]
+    return {"message": "Deleted successfully"}
