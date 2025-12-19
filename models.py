@@ -1,5 +1,5 @@
 #models text
-from pydantic import BaseModel, validators
+from pydantic import BaseModel, validator
 from typing import Optional
 import validators
 
@@ -8,7 +8,7 @@ class URLRequest(BaseModel):
     url: str
     custom_code: Optional[str] = None
 
-    @validators("url")
+    @validator("url")
     def validate_url(cls, v):
         if not v.startswith(("http://", "https://")):
             raise ValueError("URL must start with http:// or https://")
